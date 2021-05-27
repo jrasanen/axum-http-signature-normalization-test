@@ -1,29 +1,25 @@
 <p align="center">
 <a href="https://rust-starter.github.io"><img src="https://raw.githubusercontent.com/rust-starter/rust-starter.github.io/master/docs/images/logo_color.png" height="100px"/></a>
  </p>
-<h1 align="center">rust-starter</h1>
+<h1 align="center">rust-cli-starter</h1>
 <div align="center">
  <strong>
-    A simple framework to build Rust CLI Applications
+    A simple starter to build a Rust CLI Application
  </strong>
 </div>
 <br/>
-
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/omarabid/rust-starter/blob/master/LICENSE)  [![Gitter](https://badges.gitter.im/rust-starter/community.svg)](https://gitter.im/rust-starter/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 ![tests](https://github.com/omarabid/rust-starter/workflows/tests/badge.svg)
 ![build](https://github.com/omarabid/rust-starter/workflows/build/badge.svg)
 [![codecov](https://codecov.io/gh/rust-starter/rust-starter/branch/master/graph/badge.svg)](https://codecov.io/gh/rust-starter/rust-starter)
 
-[Website](https://rust-starter.github.io)
-
 `rust-starter` is a starter boilerplate to create a Rust CLI application. It comes with a battery of components like argument parsing and configuration. It also has different tooling to create your binary, or automate your build process.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**
-
-- [What's New?](#whats-new)
+- [Getting started](#getting-started)
 - [About](#about)
 - [FAQ](#faq)
 - [Features](#features)
@@ -34,9 +30,20 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## What's New?
+## Getting Started
 
-- Version 1.0.0 is released.
+1. Create a project by clicking the [Rust template](https://github.com/gitpod-io/rust-cli-starter/generate).
+
+2. Install Gitpod's [GitHub App](https://github.com/apps/gitpod-io/installations/new) on your account.<br/>
+The app will install a webook on your project to get informed when branches are pushed or updated. Gitpod will then prebuild your dev environments ahead of time, so noone has to wait for dependency installation and initialization anymore.
+
+3. Run your first prebuild by prefixing https://gitpod.io#prebuild/ to the URL of the repository.<br/>
+The revised URL is: `https://gitpod.io/#prebuild/https://github.com/<orgname>/<projectname>/`.<br/>
+Gitpod displays the prebuild logs by running the init commands in the `.gitpod.yml` file and starts a first workspace based on the results afterwards. Later, when you create a new workspace on a branch, or pull/merge request, for which a prebuild exists, the workspace loads much faster, because all dependencies are already downloaded and the code is compiled. For more information, see prebuilds.
+
+4. Enjoy being ready-to-code and share with your team 🚀
+
+[![Gitpod ready-to-code](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/from-referrer/)
 
 ## About
 
