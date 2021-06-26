@@ -1,9 +1,3 @@
-_**🔴 TODO: When you create a new framework template, please:**_
-* replace all occurrences of FRAMEWORK with the framework you create a template for
-* process all TODO comments and afterwards delete them from this file
-* adjust all other values of the new template repo to match what is configured here, e.g. "About", topics, mark it as a GitHub template, set the URL to www.gitpod.io.
-* match what you see in [other templates](https://github.com/gitpod-io/?q=template-) if in doubt
-
 # A Rust CLI template on Gitpod
 
 This is a [Rust CLI](https://rust-starter.github.io) template configured for ephemeral development environments on [Gitpod](https://www.gitpod.io/).
