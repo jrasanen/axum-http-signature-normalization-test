@@ -1,48 +1,60 @@
-#[cfg(not(debug_assertions))]
-use human_panic::setup_panic;
+use axum::{
+    response::{Html, IntoResponse, Response},
+    routing::get,
+    Router,
+};
+use axum_macros::debug_handler;
+use http_signature_normalization_reqwest::prelude::*;
+use reqwest::{header::DATE, Client, StatusCode};
+use sha2::{Digest, Sha256};
+use std::net::SocketAddr;
 
-#[cfg(debug_assertions)]
-extern crate better_panic;
+#[tokio::main]
+async fn main() {
+    let app = Router::new().route("/", get(root));
 
-#[macro_use]
-extern crate log;
+    let addr = SocketAddr::from(([0, 0, 0, 0], 3000));
 
-use utils::app_config::AppConfig;
-use utils::error::Result;
+    axum::Server::bind(&addr)
+        .serve(app.into_make_service())
+        .await
+        .unwrap();
+}
 
-fn main() -> Result<()> {
-    // Human Panic. Only enabled when *not* debugging.
-    #[cfg(not(debug_assertions))]
-    {
-        setup_panic!();
+#[debug_handler]
+async fn root() -> Result<Html<String>, MyError> {
+    let config = Config::default().require_header("accept");
+
+    let response = Client::new()
+        .post("https://example.org/")
+        .header("User-Agent", "Reqwest")
+        .header("Accept", "text/plain")
+        .signature_with_digest(config, "my-key-id", Sha256::new(), "my request body", |s| {
+            println!("Signing String\n{}", s);
+            Ok(base64::encode(s)) as Result<_, MyError>
+        })
+        .await
+        .unwrap();
+
+    println!("{:?}", response);
+
+    Ok(Html("Hello, World!".to_string()))
+}
+
+impl IntoResponse for MyError {
+    fn into_response(self) -> Response {
+        (StatusCode::UNPROCESSABLE_ENTITY, self.to_string()).into_response()
     }
+}
 
-    // Better Panic. Only enabled *when* debugging.
-    #[cfg(debug_assertions)]
-    {
-        better_panic::Settings::debug()
-            .most_recent_first(false)
-            .lineno_suffix(true)
-            .verbosity(better_panic::Verbosity::Full)
-            .install();
-    }
+#[derive(Debug, thiserror::Error)]
+pub enum MyError {
+    #[error("Failed to create signing string, {0}")]
+    Convert(#[from] SignError),
 
-    // Setup Logging
-    //
-    // TODO: This code should probably be included in utils::logger::setup_logging
-    // The problem is that global variable is not set correct if this code is
-    // executed from a sub-crate. I'm not sure if it is possible to "import"
-    // this global variable to the root of the project and initialize it in
-    // the utils crate.
-    //
-    //utils::logger::setup_logging()?;
-    let _guard = slog_scope::set_global_logger(utils::logger::default_root_logger()?);
-    let _log_guard = slog_stdlog::init()?;
+    #[error("Failed to send request")]
+    SendRequest(#[from] reqwest::Error),
 
-    // Initialize Configuration
-    let config_contents = include_str!("resources/default_config.toml");
-    AppConfig::init(Some(config_contents))?;
-
-    // Match Commands
-    cli::cli_match()
+    #[error("Failed to retrieve request body")]
+    Body(reqwest::Error),
 }

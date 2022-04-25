@@ -1,5 +1,7 @@
 tasks:
   - init: |
+      rustup default nightly
+      rustup +nightly component add rustfmt
       cargo build
     command: |
       cargo run
@@ -7,3 +9,5 @@ tasks:
 vscode:
   extensions:
     - matklad.rust-analyzer
+    - serayuzgur.crates
+    - bungcip.better-toml
